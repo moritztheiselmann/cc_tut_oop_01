@@ -4,6 +4,9 @@ class Shape {
   float diameter;
   int segments;
   color col;
+  float rotation;
+  float rotSteps = 0;
+  boolean shouldRotate;
   
   Shape(float x, float y, float diameter, int segments) {
     this.x = x;
@@ -11,11 +14,15 @@ class Shape {
     this.diameter = diameter;
     this.segments = segments;
     col = color(255);
+    rotation = 0;
+    rotSteps = random(0.005, 0.025);
+    shouldRotate = true;
   }
   
   void show() {
     pushMatrix();
     translate(x, y);
+    rotate(rotation);
     stroke(255);
     fill(col);
     beginShape();
@@ -27,6 +34,10 @@ class Shape {
     }
     endShape(CLOSE);
     popMatrix();
+    
+    if(shouldRotate) {
+      rotation += rotSteps;
+    }
   }
   
   void checkPosition(int mousex, int mousey) {
@@ -34,9 +45,11 @@ class Shape {
     
     if ( d < diameter/2) {
       col = color(255);
+      shouldRotate = false;
     }
     else {
       col = color(0);
+      shouldRotate = true;
     }
   }
 }
